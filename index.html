@@ -53,8 +53,13 @@ h1 { font-size: 21px; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
 .foundation-tip { display: none; position: absolute; left: 0; top: 100%; z-index: 100; background: #1E293B; color: #F8FAFC; padding: 10px 12px; border-radius: 6px; font-size: 11px; font-weight: 400; line-height: 1.5; width: 340px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); pointer-events: none; }
 .foundation-tip strong { color: #93C5FD; font-weight: 600; }
 .foundation-label:hover .foundation-tip { display: block; }
+.foundation-row.uncovered .foundation-tip { color: #F8FAFC; opacity: 1; }
 .foundation-cell { padding: 0 10px; border-left: 1px solid #E2E8F0; }
 .no-coverage { color: #94A3B8; font-style: italic; font-size: 12px; }
+.foundation-row.uncovered { background: #F8FAFC; }
+.foundation-row.uncovered .foundation-name { color: #94A3B8; }
+.foundation-row.uncovered .foundation-sub { opacity: 0.5; }
+.no-lma-tag { display: inline-block; font-size: 9px; font-weight: 600; color: #94A3B8; background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 3px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }
 .dots { display: flex; flex-wrap: wrap; gap: 0; }
 
 /* Item dots */
@@ -89,7 +94,7 @@ const items3XX = [
   { item: 18, diff: 1.500, foundations: ["LL 1.5 Questions", "LL 1.8 Conversations"], text: 'Uses spoken, signed, and/or nonverbal communication to indicate they understand "Who?", "What?", "Where?", "Why?", and "How?" questions.' },
   { item: 19, diff: 1.691, foundations: ["LL 1.3 Size & Location", "LL 1.4 Grammar"], text: "If using ASL, uses classifiers to describe manner, place, direction, size, shape, degree, and intensity. If using spoken English, uses appropriate adjectives (i.e., describe size, color, shape), prepositions (i.e., describe place or direction), and adverbs (i.e., how actions are performed)." },
   { item: 20, diff: 1.459, foundations: ["LL 3.1 Literacy Interest", "LL 3.2 Stories"], text: "Discusses storybooks that are read to them." },
-  { item: 21, diff: 0.791, foundations: ["LL 2.6 Concepts of Print", "LL 3.1 Literacy Interest"], text: "Makes attempts to read and write." },
+  { item: 21, diff: 0.791, foundations: ["LL 4.4 Writing Words/Ideas"], text: "Makes attempts to read and write." },
   { item: 22, diff: 1.676, foundations: ["LL 3.2 Stories"], text: "Sequences a 3 picture story that has been read to them." },
   { item: 23, diff: 1.735, foundations: ["LL 1.1 Vocabulary"], text: "Has at least 1,500 words and/or signs." },
 ];
@@ -141,7 +146,7 @@ const items4XX = [
 ];
 
 const strandDefs = [
-  { name: "Foundational Language Development: Strand 1.0 \u2014 Listening and Speaking", tag: "", color: "#0D7377", foundations: [
+  { name: "Foundational Language Development: Strand 1.0 \u2014 Listening and Speaking", tag: "", color: "#0D7377", showAll: true, foundations: [
     { id: "LL 1.1 Vocabulary", label: "Understanding and Using Vocabulary", sub: "Foundation 1.1 \u00B7 Sub-Strand: Vocabulary",
       early: "Understand and use words for objects, actions, and attributes frequently experienced in everyday life, such as through play, conversations, or stories.",
       later: "Understand and use an increasing variety of words for objects, actions, and attributes experienced in everyday life, such as through play, conversations, or stories." },
@@ -167,24 +172,56 @@ const strandDefs = [
       early: "Participate in back-and-forth conversations with adults and peers. Respond on topic for at least one turn in a conversation.",
       later: "Participate in increasingly long and complex back-and-forth conversations with adults and peers. Respond on topic across several turns in the conversation." },
   ]},
-  { name: "Foundational Language Development: Strand 2.0 \u2014 Foundational Literacy Skills", tag: "", color: "#7C3AED", foundations: [
+  { name: "Foundational Language Development: Strand 2.0 \u2014 Foundational Literacy Skills", tag: "", color: "#7C3AED", showAll: true, foundations: [
+    { id: "LL 2.1 Isolating Initial Sounds", label: "Isolating Initial Sounds", sub: "Foundation 2.1 \u00B7 Sub-Strand: Phonological Awareness",
+      early: "Match words that have the same first sound in speech, with adult support or the support of pictures or objects.",
+      later: "Isolate and pronounce the first sound of a word, with adult support or the support of pictures or objects." },
+    { id: "LL 2.2 Recognizing and Blending Sounds", label: "Recognizing and Blending Sounds", sub: "Foundation 2.2 \u00B7 Sub-Strand: Phonological Awareness",
+      early: "When presented with two single-syllable words (such as \u201Csand\u201D and \u201Cbox\u201D), blend them into a compound word in speech with adult support or the support of pictures or objects.",
+      later: "When presented with syllables and individual sounds, blend them into words in speech with adult support or the support of pictures or objects." },
     { id: "LL 2.3 Rhyming", label: "Participating in Rhyming and Wordplay", sub: "Foundation 2.3 \u00B7 Sub-Strand: Phonological Awareness",
       early: "Recognize or participate in familiar rhymes or songs.",
       later: "Produce rhyming sounds or words. Rhymes may be imperfect and can be real or nonsense words." },
-    { id: "LL 2.6 Concepts of Print", label: "Understanding the Concept of Print", sub: "Foundation 2.6 \u00B7 Sub-Strand: Concepts About Print",
-      early: "Recognize print as something that can be read and has meaning.",
-      later: "Identify the meaning of a few instances of familiar print in the environment." },
     { id: "LL 2.4 Letters", label: "Identifying Letters", sub: "Foundation 2.4 \u00B7 Sub-Strand: Alphabetics and Print",
       early: "Match some letter names to their printed form. These will commonly be letters in the child\u2019s first name.",
       later: "Match many letter names to their printed form." },
+    { id: "LL 2.5 Letter-Sound Correspondence", label: "Learning Letter\u2013Sound Correspondence", sub: "Foundation 2.5 \u00B7 Sub-Strand: Alphabetics and Print",
+      early: "Recognize that letters or characters have sounds.",
+      later: "Accurately identify or produce sounds associated with several letters or common characters with adult support. If learning the alphabet in English, Spanish, or other languages using a similar alphabet, such as Tagalog, accurately identify or produce sounds associated with about half of the letters." },
+    { id: "LL 2.6 Concepts of Print", label: "Understanding the Concept of Print", sub: "Foundation 2.6 \u00B7 Sub-Strand: Concepts About Print",
+      early: "Recognize print as something that can be read and has meaning.",
+      later: "Identify the meaning of a few instances of familiar print in the environment." },
+    { id: "LL 2.7 Print Conventions", label: "Understanding Print Conventions", sub: "Foundation 2.7 \u00B7 Sub-Strand: Concepts About Print",
+      early: "Display basic book-handling behaviors and knowledge of basic print conventions, such as turning pages in a single direction and recognizing the cover and title of a book.",
+      later: "Display increasingly sophisticated book-handling behaviors and knowledge of print conventions, such as turning pages one at a time and understanding the direction and orientation of print." },
   ]},
-  { name: "Foundational Language Development: Strand 3.0 \u2014 Reading", tag: "", color: "#6D28D9", foundations: [
+  { name: "Foundational Language Development: Strand 3.0 \u2014 Reading", tag: "", color: "#6D28D9", showAll: true, foundations: [
     { id: "LL 3.1 Literacy Interest", label: "Demonstrating Interest in Literacy Activities", sub: "Foundation 3.1 \u00B7 Sub-Strand: Literacy Interest and Response",
       early: "Demonstrate interest in and engagement with literacy and literacy-related activities.",
       later: "Demonstrate interest in and engagement with literacy and literacy-related activities for progressively extended periods of time and with increasing independence." },
     { id: "LL 3.2 Stories", label: "Understanding Stories", sub: "Foundation 3.2 \u00B7 Sub-Strand: Comprehension and Analysis of Age-Appropriate Text",
       early: "Demonstrate basic understanding of main characters or events in a story after the child has experienced the story a few times.",
       later: "Demonstrate understanding of details in a story, including knowledge of characters, events, and ordering of events, and use their increased understanding of story structure to predict what might come next when asked." },
+    { id: "LL 3.3 Informational Text", label: "Understanding Informational Text", sub: "Foundation 3.3 \u00B7 Sub-Strand: Comprehension and Analysis of Age-Appropriate Text",
+      early: "Demonstrate basic understanding of informational text after the child has experienced the text a few times.",
+      later: "Demonstrate deeper understanding of informational text using their abilities to make connections to previous knowledge, make inferences, and ask questions." },
+  ]},
+  { name: "Foundational Language Development: Strand 4.0 \u2014 Writing", tag: "", color: "#5B21B6", showAll: true, foundations: [
+    { id: "LL 4.1 Fine Motor Writing", label: "Developing Fine Motor Skills in Writing", sub: "Foundation 4.1 \u00B7 Sub-Strand: Writing Skills",
+      early: "Experiment with grasp and body position using a variety of drawing and writing tools.",
+      later: "Adjust grasp and body position for increased control in drawing and writing." },
+    { id: "LL 4.2 Writing to Represent Sounds", label: "Writing to Represent Sounds", sub: "Foundation 4.2 \u00B7 Sub-Strand: Writing as Communication",
+      early: "(No foundation.)",
+      later: "Write, with adult support, a few recognizable letters that are intended to represent their corresponding sounds." },
+    { id: "LL 4.3 Dictating", label: "Dictating Thoughts and Ideas to Be Conveyed in Writing", sub: "Foundation 4.3 \u00B7 Sub-Strand: Writing as Communication",
+      early: "Engage in dictating thoughts and ideas when an adult offers to help with writing them down.",
+      later: "Demonstrate interest in conveying extended thoughts and ideas in writing, engaging the help of an adult." },
+    { id: "LL 4.4 Writing Words/Ideas", label: "Writing to Represent Words or Ideas", sub: "Foundation 4.4 \u00B7 Sub-Strand: Writing as Communication",
+      early: "Write using scribbles that resemble letters or characters and are distinct from pictures.",
+      later: "Write a few recognizable letters or characters to represent words or ideas." },
+    { id: "LL 4.5 Writing Own Name", label: "Writing Own Name", sub: "Foundation 4.5 \u00B7 Sub-Strand: Writing as Communication",
+      early: "Write marks to represent own name.",
+      later: "Write own name nearly correctly." },
   ]},
   { name: "Social & Emotional Development: Strand 1.0 \u2014 Self", tag: "", color: "#BE185D", foundations: [
     { id: "SED 1.3 Understanding Emotions", label: "Understanding Emotions in Self and Others", sub: "Foundation 1.3 \u00B7 Sub-Strand: Emotional Knowledge",
@@ -310,7 +347,7 @@ out += `</div>`;
 
 // Foundation matrix
 strandDefs.forEach(strand => {
-  const active = strand.foundations.filter(f =>
+  const active = strand.showAll ? strand.foundations : strand.foundations.filter(f =>
     getItemsForFoundation(items3XX, f.id).length > 0 || getItemsForFoundation(items4XX, f.id).length > 0
   );
   if (active.length === 0) return;
@@ -329,9 +366,11 @@ strandDefs.forEach(strand => {
   active.forEach(f => {
     const i3 = getItemsForFoundation(items3XX, f.id);
     const i4 = getItemsForFoundation(items4XX, f.id);
+    const hasItems = i3.length > 0 || i4.length > 0;
     const tipText = f.early ? `<strong>Early (3 to 4\u00BD yr):</strong> ${esc(f.early)}${f.later ? '<br><br><strong>Later (4 to 5\u00BD yr):</strong> ' + esc(f.later) : ''}` : '';
-    out += `<div class="foundation-row">`;
-    out += `<div class="foundation-label"><div class="foundation-name">${esc(f.label)}${tipText ? '<div class="foundation-tip">' + tipText + '</div>' : ''}</div><div class="foundation-sub" style="color:${strand.color}">${esc(f.sub)}</div></div>`;
+    const noLmaTag = !hasItems ? '<span class="no-lma-tag">No LMA items</span>' : '';
+    out += `<div class="foundation-row${!hasItems ? ' uncovered' : ''}">`;
+    out += `<div class="foundation-label"><div class="foundation-name">${esc(f.label)}${noLmaTag}${tipText ? '<div class="foundation-tip">' + tipText + '</div>' : ''}</div><div class="foundation-sub" style="color:${strand.color}">${esc(f.sub)}</div></div>`;
     out += cellHTML(i3);
     out += cellHTML(i4);
     out += `</div>`;
