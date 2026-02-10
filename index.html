@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PTKLF Foundation Coverage by LMA Form</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #fff; color: #1E293B; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
+h1 { font-size: 21px; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
+.subtitle { font-size: 12px; color: #64748B; margin-bottom: 2px; line-height: 1.4; }
+.note { font-size: 11px; color: #94A3B8; font-style: italic; margin-bottom: 16px; }
+
+/* Legend */
+.legend { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; padding: 10px 16px; background: #F8FAFC; border-radius: 8px; margin-bottom: 16px; font-size: 12px; }
+.legend-label { font-weight: 600; color: #475569; }
+.legend-item { display: flex; align-items: center; gap: 4px; }
+.legend-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; }
+.legend-text { font-weight: 600; font-size: 11px; }
+.legend-divider { display: flex; align-items: center; gap: 6px; border-left: 1px solid #CBD5E1; padding-left: 14px; }
+.legend-dot { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; color: #fff; font-size: 9px; font-weight: 700; }
+.legend-note { margin-left: auto; font-size: 10px; color: #94A3B8; }
+
+/* Summary boxes */
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.summary-box { padding: 14px 16px; background: #F1F5F9; border-radius: 8px; }
+.summary-header { display: flex; justify-content: space-between; align-items: baseline; }
+.summary-label { font-weight: 700; font-size: 14px; }
+.summary-sub { font-size: 11px; color: #64748B; }
+.summary-stats { display: flex; gap: 16px; align-items: baseline; margin-top: 8px; }
+.summary-total { font-size: 28px; font-weight: 800; }
+.summary-total-label { font-size: 12px; color: #64748B; margin-left: 4px; }
+.stat-block { text-align: center; }
+.stat-num { font-size: 22px; font-weight: 800; }
+.stat-label { font-size: 10px; color: #64748B; line-height: 1.2; }
+
+/* Strand sections */
+.strand { margin-bottom: 6px; }
+.strand-header { display: grid; grid-template-columns: 210px 1fr; padding: 8px 12px; border-radius: 6px 6px 0 0; align-items: center; }
+.strand-name { font-weight: 700; font-size: 14px; color: #fff; }
+.strand-forms { display: grid; grid-template-columns: 1fr 1fr; }
+.strand-form-label { font-weight: 600; font-size: 11px; color: rgba(255,255,255,0.85); padding-left: 10px; }
+.strand-subheader { display: grid; grid-template-columns: 210px 1fr 1fr; padding: 3px 12px; border-bottom: 1px solid #E2E8F0; }
+.strand-subheader-label { font-size: 10px; font-weight: 600; }
+.strand-subheader-tag { font-size: 10px; font-weight: 600; text-align: right; padding-right: 12px; }
+
+/* Foundation rows */
+.foundation-row { display: grid; grid-template-columns: 210px 1fr 1fr; border-bottom: 1px solid #E2E8F0; padding: 10px 0; align-items: start; }
+.foundation-label { padding-left: 12px; padding-right: 8px; }
+.foundation-name { font-weight: 600; font-size: 13px; color: #1E293B; line-height: 1.35; cursor: help; position: relative; }
+.foundation-sub { font-size: 11px; font-weight: 600; margin-top: 2px; }
+.foundation-tip { display: none; position: absolute; left: 0; top: 100%; z-index: 100; background: #1E293B; color: #F8FAFC; padding: 10px 12px; border-radius: 6px; font-size: 11px; font-weight: 400; line-height: 1.5; width: 340px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); pointer-events: none; }
+.foundation-tip strong { color: #93C5FD; font-weight: 600; }
+.foundation-label:hover .foundation-tip { display: block; }
+.foundation-cell { padding: 0 10px; border-left: 1px solid #E2E8F0; }
+.no-coverage { color: #94A3B8; font-style: italic; font-size: 12px; }
+.dots { display: flex; flex-wrap: wrap; gap: 0; }
+
+/* Item dots */
+.item-dot { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 6px; color: #fff; font-size: 11px; font-weight: 700; margin: 2px; cursor: help; border: 2px solid transparent; position: relative; }
+.item-tip { display: none; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); z-index: 200; background: #1E293B; color: #F8FAFC; padding: 8px 10px; border-radius: 6px; font-size: 11px; font-weight: 400; line-height: 1.45; width: 280px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); pointer-events: none; margin-top: 4px; text-align: left; }
+.item-tip strong { color: #93C5FD; font-weight: 600; }
+.item-dot:hover .item-tip { display: block; }
+</style>
+</head>
+<body>
+<div class="container" id="app"></div>
+<script>
+// ── 3XX Items (3–4 year / 37–48 months) ──
+const items3XX = [
+  { item: 1, diff: -2.043, foundations: ["LL 1.1 Vocabulary"], text: "Gives you objects you request by name." },
+  { item: 2, diff: -1.663, foundations: ["LL 1.1 Vocabulary", "LL 1.8 Conversations"], text: "Understands most of what is spoken and/or signed to them." },
+  { item: 3, diff: -1.195, foundations: ["LL 1.1 Vocabulary", "SED 1.3 Understanding Emotions"], text: "Understands many feeling words and/or signs such as mad, scared, happy, etc." },
+  { item: 4, diff: 1.268, foundations: ["LL 1.4 Grammar"], text: "Understands prepositions that show relationships between words in a sentence (with, of, by, and from)." },
+  { item: 5, diff: 0.848, foundations: ["ATL 2.1 Working Memory"], text: "Can follow three-step directions, spoken and/or signed (get book, sit on rug, and open to your favorite picture)." },
+  { item: 6, diff: -0.373, foundations: ["ATL 2.1 Working Memory"], text: "Carries out a one-step request that relates to a new or an unfamiliar activity or situation." },
+  { item: 7, diff: 0.239, foundations: ["LL 1.3 Size & Location", "Math 4.5 Positions & Directions"], text: 'Understands several description words and/or signs that compare (e.g., bigger, biggest). Correctly responds to questions like: "Which is smaller, a dog or a mouse?"' },
+  { item: 8, diff: 0.261, foundations: ["LL 1.6 Narratives"], text: "Describes action in pictures." },
+  { item: 9, diff: 2.075, foundations: ["LL 1.4 Grammar"], text: "Uses singular/plural noun-verb agreement (e.g., boy walks, boys walk)." },
+  { item: 10, diff: 1.992, foundations: ["LL 1.8 Conversations"], text: "Carries on simple conversations staying on topic through 3-4 turns." },
+  { item: 11, diff: 0.966, foundations: ["LL 1.8 Conversations", "SED 2.1 Reciprocal Interactions"], text: "Answers questions logically." },
+  { item: 12, diff: 0.239, foundations: ["ATL 2.1 Working Memory"], text: "Repeats familiar words and/or signs in the order presented\u2014no less than 3 or more than 6 familiar related words and/or signs." },
+  { item: 13, diff: 1.348, foundations: ["LL 1.4 Grammar"], text: "Uses 4-5 word and/or sign sentences." },
+  { item: 14, diff: -0.215, foundations: ["No PTKLF Match"], text: "Is easily understood by family and familiar adults." },
+  { item: 15, diff: 0.906, foundations: ["LL 1.4 Grammar"], text: "Uses possessives (e.g., mine, yours, his, hers)." },
+  { item: 16, diff: 1.756, foundations: ["LL 1.6 Narratives", "LL 1.7 Explanations"], text: "Speaks and/or signs about things that have happened at school or with friends." },
+  { item: 17, diff: 2.051, foundations: ["LL 1.1 Vocabulary", "Math 2.5 Sorting & Classifying"], text: "Guesses name of hidden object when given language clues (words and/or signs)." },
+  { item: 18, diff: 1.500, foundations: ["LL 1.5 Questions", "LL 1.8 Conversations"], text: 'Uses spoken, signed, and/or nonverbal communication to indicate they understand "Who?", "What?", "Where?", "Why?", and "How?" questions.' },
+  { item: 19, diff: 1.691, foundations: ["LL 1.3 Size & Location", "LL 1.4 Grammar"], text: "If using ASL, uses classifiers to describe manner, place, direction, size, shape, degree, and intensity. If using spoken English, uses appropriate adjectives (i.e., describe size, color, shape), prepositions (i.e., describe place or direction), and adverbs (i.e., how actions are performed)." },
+  { item: 20, diff: 1.459, foundations: ["LL 3.1 Literacy Interest", "LL 3.2 Stories"], text: "Discusses storybooks that are read to them." },
+  { item: 21, diff: 0.791, foundations: ["LL 2.6 Concepts of Print", "LL 3.1 Literacy Interest"], text: "Makes attempts to read and write." },
+  { item: 22, diff: 1.676, foundations: ["LL 3.2 Stories"], text: "Sequences a 3 picture story that has been read to them." },
+  { item: 23, diff: 1.735, foundations: ["LL 1.1 Vocabulary"], text: "Has at least 1,500 words and/or signs." },
+];
+
+// ── 4XX Items (4–5 year / 48–60 months) ──
+const items4XX = [
+  { item: 1, diff: 0.833, foundations: ["ATL 2.1 Working Memory"], text: "Can follow spoken and/or signed four-step directions." },
+  { item: 2, diff: -1.101, foundations: ["LL 1.2 Categories", "Health 1.1 Body Parts"], text: "Understands what we do with body parts, such as eyes, ears, mouth, when asked." },
+  { item: 3, diff: -1.567, foundations: ["LL 1.2 Categories", "Math 2.5 Sorting & Classifying"], text: "Understands things that are similar (e.g., things that fly, things you eat, things you wear)." },
+  { item: 4, diff: -2.040, foundations: ["Math 1.3 Cardinality"], text: "Knows how many are: one, two, three, four, five." },
+  { item: 5, diff: 1.681, foundations: ["LL 2.1 Phon. Awareness"], text: "Understands words and/or signs that rhyme." },
+  { item: 6, diff: 0.050, foundations: ["LL 1.1 Vocabulary"], text: "Understands time concepts (e.g., day/night) and seasons of the year." },
+  { item: 7, diff: 0.519, foundations: ["LL 1.3 Size & Location", "Math 4.5 Positions & Directions"], text: "Points to or places object before, after, above, below when asked." },
+  { item: 8, diff: -2.587, foundations: ["LL 1.1 Vocabulary"], text: "Understands most of what is spoken and/or signed at home and in school." },
+  { item: 9, diff: -0.517, foundations: ["LL 1.5 Questions"], text: "Asks \u201CWhat\u201D questions." },
+  { item: 10, diff: -0.363, foundations: ["LL 1.4 Grammar"], text: "Uses 4\u20138 word and/or sign sentences." },
+  { item: 11, diff: -0.301, foundations: ["No PTKLF Match"], text: "Signs and/or speaks clearly and fluently in an easy-to-understand manner." },
+  { item: 12, diff: -1.283, foundations: ["No PTKLF Match"], text: "Speaks and/or signs with emotion and body language when describing an event or action." },
+  { item: 13, diff: -0.573, foundations: ["LL 1.5 Questions"], text: "Asks \u201CWhere\u201D questions." },
+  { item: 14, diff: 1.010, foundations: ["LL 1.4 Grammar"], text: "Uses long and detailed sentences." },
+  { item: 15, diff: 0.591, foundations: ["LL 1.5 Questions"], text: "Asks \u201CWhy\u201D questions." },
+  { item: 16, diff: 1.141, foundations: ["LL 1.8 Conversations"], text: "Answers \u201CWhy\u201D and \u201CHow\u201D questions." },
+  { item: 17, diff: 0.078, foundations: ["LL 1.5 Questions"], text: "Asks \u201CWho\u201D questions." },
+  { item: 18, diff: 0.444, foundations: ["LL 1.8 Conversations"], text: "Ends conversations appropriately." },
+  { item: 19, diff: 1.857, foundations: ["LL 1.4 Grammar"], text: "Uses future tense." },
+  { item: 20, diff: 2.089, foundations: ["LL 2.1 Phon. Awareness"], text: "Uses rhyming with words and/or signs." },
+  { item: 21, diff: 1.870, foundations: ["LL 1.4 Grammar"], text: "Uses \u201Cbecause\u2026,\u201D \u201Cwhen\u2026,\u201D \u201Cif\u2026,\u201D and \u201Cso\u2026,\u201D in clauses." },
+  { item: 22, diff: 2.232, foundations: ["LL 1.3 Size & Location", "LL 1.4 Grammar"], text: "Uses \u201Cbefore\u201D and \u201Cafter.\u201D" },
+  { item: 23, diff: 1.488, foundations: ["LL 1.4 Grammar"], text: "Uses \u201Cthese\u201D and \u201Cthose.\u201D" },
+  { item: 24, diff: 1.870, foundations: ["LL 1.4 Grammar"], text: "Uses \u201Chas,\u201D \u201Cdoes,\u201D \u201Chad.\u201D" },
+  { item: 25, diff: 2.446, foundations: ["LL 1.4 Grammar"], text: "In ASL, uses topicalized sentences. In spoken English, uses if\u2013then sentences." },
+  { item: 26, diff: 1.510, foundations: ["LL 1.4 Grammar"], text: "Uses various verb tenses (past, present, future) correctly most of the time." },
+  { item: 27, diff: 1.075, foundations: ["No PTKLF Match"], text: "In ASL, has mastered more complex handshapes and non-manual markers (i.e., head tilts, body movements to convey tone and intensity, facial expressions). In spoken English, most sounds are pronounced correctly, though they may have difficulty with \u201Cr\u201D, \u201Cv\u201D, and \u201Cth\u201D." },
+  { item: 28, diff: 0.935, foundations: ["LL 1.4 Grammar", "LL 1.5 Questions"], text: "In ASL, repeats Wh- word at beginning and end of question (e.g., WHERE GO WHERE?). This is called WH-bracketing. In spoken English, uses proper structure and syntax to form a question." },
+  { item: 29, diff: 1.267, foundations: ["LL 1.4 Grammar"], text: "In ASL, uses the AGENT sign (e.g., FARM-ER; TEACH-ER). In spoken English, understands and has the ability to use derivational morphology (i.e., adding \u201C-er\u201D to indicate an agent or someone who performs an action)." },
+  { item: 30, diff: 1.951, foundations: ["LL 1.6 Narratives"], text: "In ASL, uses topic continuation (holds a sign with one hand and continues signing with the other). In spoken English, uses discourse markers (i.e., conjunctions, pauses for emphasis, and repetition) to connect ideas or expand upon a topic without pausing." },
+  { item: 31, diff: 0.115, foundations: ["No PTKLF Match"], text: "In ASL, uses body shift and eye-gaze. In spoken English, uses prosody, non-verbal cues, and facial expressions or gestures to convey meaning and indicate shifts in focus." },
+  { item: 32, diff: 1.930, foundations: ["LL 1.4 Grammar"], text: "In ASL, uses number distribution, e.g., talking about leaves falling. In spoken English, uses singular nouns, plural nouns, quantifiers, and temporal/spatial distribution." },
+  { item: 33, diff: -1.772, foundations: ["LL 3.1 Literacy Interest", "LL 3.2 Stories"], text: "Enjoys stories and can understand simple questions." },
+  { item: 34, diff: -2.308, foundations: ["LL 2.7 Letter/Word Knowledge"], text: "Identifies some written letters and numbers." },
+  { item: 35, diff: 0.767, foundations: ["LL 1.6 Narratives"], text: "Can tell made-up stories that stay on topic. In ASL, the child can use space in storytelling." },
+  { item: 36, diff: -2.856, foundations: ["LL 3.1 Literacy Interest"], text: "Pays attention to short stories." },
+  { item: 37, diff: 1.536, foundations: ["LL 3.2 Stories"], text: "Names main idea after listening to a story." },
+  { item: 38, diff: -0.466, foundations: ["LL 1.2 Categories", "Math 2.5 Sorting & Classifying"], text: "Names categories (e.g., pizza, hamburgers as food)." },
+  { item: 39, diff: -0.603, foundations: ["LL 1.3 Size & Location", "LL 1.7 Explanations"], text: "Uses describing words and/or signs (e.g., hard, soft, yucky)." },
+  { item: 40, diff: -0.495, foundations: ["Math 3.2 Ordering Objects"], text: "Puts sequencing concepts together (smallest to largest; longest to shortest)." },
+  { item: 41, diff: 1.082, foundations: ["LL 1.1 Vocabulary", "LL 1.5 Questions"], text: "Begins to ask the meanings of spoken and/or signed words." },
+  { item: 42, diff: 0.826, foundations: ["LL 1.1 Vocabulary"], text: "Has at least 2,500 words and/or signs." },
+];
+
+const strandDefs = [
+  { name: "Listening & Speaking", tag: "Language & Literacy 1.0", color: "#0D7377", foundations: [
+    { id: "LL 1.1 Vocabulary", label: "Understanding & Using Vocabulary", sub: "LL Foundation 1.1",
+      early: "Understand and use accepted words for objects, actions, and attributes encountered frequently in both real and symbolic contexts.",
+      later: "Understand and use an increasing variety and specificity of accepted words for objects, actions, and attributes encountered in both real and symbolic contexts." },
+    { id: "LL 1.2 Categories", label: "Understanding & Using Words for Categories", sub: "LL Foundation 1.2",
+      early: "Understand and use words for some general categories and some specific items within a category.",
+      later: "Understand and use words for more general categories, more specific items within a category, and words that describe the relationship between categories." },
+    { id: "LL 1.3 Size & Location", label: "Understanding & Using Size & Location Words", sub: "LL Foundation 1.3",
+      early: "Understand and use a small number of words related to size and location of objects.",
+      later: "Understand and use a greater number of words for size and location of objects and begin to use words for the temporal position of events." },
+    { id: "LL 1.4 Grammar", label: "Using Grammar & Sentence Structure", sub: "LL Foundation 1.4",
+      early: "Use two- and three-word sentences with emerging control of accepted grammar.",
+      later: "Use sentences of increasing length, with increasing control of accepted grammar." },
+    { id: "LL 1.5 Questions", label: "Asking Questions", sub: "LL Foundation 1.5",
+      early: "Ask simple questions.",
+      later: "Ask increasingly complex questions." },
+    { id: "LL 1.6 Narratives", label: "Constructing Narratives", sub: "LL Foundation 1.6",
+      early: "Create simple narratives, such as sharing a personal experience or retelling a short sequence of events.",
+      later: "Create more extended narratives, including personal narratives, fictional stories, and narratives about informational topics." },
+    { id: "LL 1.7 Explanations", label: "Sharing Explanations & Opinions", sub: "LL Foundation 1.7",
+      early: "Offer simple explanations, opinions, or reasons in their conversations.",
+      later: "Offer more detailed and extended explanations, opinions, or reasons in their conversations." },
+    { id: "LL 1.8 Conversations", label: "Participating in Conversations", sub: "LL Foundation 1.8",
+      early: "Participate in brief, simple conversations that are connected to a shared activity.",
+      later: "Participate in longer and more complex conversations, including conversations on topics that are not immediately present." },
+  ]},
+  { name: "Reading", tag: "Language & Literacy 2.0\u20133.0", color: "#7C3AED", foundations: [
+    { id: "LL 2.1 Phon. Awareness", label: "Phonological Awareness", sub: "LL Foundation 2.1\u20132.2",
+      early: "Recognize and produce rhymes in stories, songs, games, or play; orally blend and delete words and syllables without the support of pictures or objects.",
+      later: "Recognize, produce, and manipulate sounds (rhymes, syllables, onsets/rimes, phonemes) with increasing independence." },
+    { id: "LL 2.6 Concepts of Print", label: "Concepts of Print", sub: "LL Foundation 2.6",
+      early: "Demonstrate emerging understanding that print carries meaning and begin to recognize how print is organized.",
+      later: "Demonstrate a more developed understanding that print carries meaning and know that print is organized in a specific way." },
+    { id: "LL 2.7 Letter/Word Knowledge", label: "Letter & Word Knowledge", sub: "LL Foundation 2.7",
+      early: "Demonstrate emerging letter and word knowledge.",
+      later: "Demonstrate a more developed knowledge of letters and words." },
+    { id: "LL 3.1 Literacy Interest", label: "Interest in Literacy Activities", sub: "LL Foundation 3.1",
+      early: "Demonstrate an interest in books, songs, rhymes, and other literacy activities.",
+      later: "Demonstrate a growing interest and involvement in books, songs, rhymes, and other literacy activities." },
+    { id: "LL 3.2 Stories", label: "Understanding Stories", sub: "LL Foundation 3.2",
+      early: "Demonstrate understanding of main events or ideas in familiar stories or informational texts with adult support.",
+      later: "Demonstrate understanding of main events or ideas in stories and informational texts with less adult support; retell familiar stories with increasing detail." },
+  ]},
+  { name: "Self (SED)", tag: "Social & Emotional Dev. 1.0", color: "#BE185D", foundations: [
+    { id: "SED 1.3 Understanding Emotions", label: "Understanding Emotions in Self and Others", sub: "SED Foundation 1.3",
+      early: "Identify basic emotions (e.g., happy, sad, surprised) and recognize emotional expressions in self and others.",
+      later: "Identify basic and complex emotions (e.g., embarrassment, pride) and recognize emotional expressions in self and others. Demonstrate increasing understanding of different ways of expressing emotions." },
+    { id: "SED 1.7 Understanding Others", label: "Understanding Other People\u2019s Thoughts & Experiences", sub: "SED Foundation 1.7",
+      early: "Develop understanding that others have unique thoughts, behaviors, and experiences.",
+      later: "Demonstrate emerging understanding of the mental and psychological reasons people act as they do and how these contribute to differences in behavior." },
+  ]},
+  { name: "Interactions & Relationships (SED)", tag: "Social & Emotional Dev. 2.0", color: "#9333EA", foundations: [
+    { id: "SED 2.1 Reciprocal Interactions", label: "Reciprocal Interactions with Adults", sub: "SED Foundation 2.1",
+      early: "Engage in positive interactions with familiar adults, especially in familiar settings. Demonstrate an emerging ability to initiate social interaction with familiar adults.",
+      later: "Take greater initiative and participate in more reciprocal interactions with familiar adults (e.g., initiate a conversation, suggest a shared activity, or ask for assistance)." },
+    { id: "SED 2.2 Seeking Security", label: "Seeking Security and Support", sub: "SED Foundation 2.2",
+      early: "Seek security and support (e.g., help or comfort) from attachment figures to address their needs, especially in difficult situations.",
+      later: "Anticipate when they need support and take greater initiative in seeking support from attachment figures to address their needs." },
+  ]},
+  { name: "Executive Functioning (ATL)", tag: "Approaches to Learning 2.0", color: "#0369A1", foundations: [
+    { id: "ATL 2.1 Working Memory", label: "Working Memory", sub: "ATL Foundation 2.1",
+      early: "Hold approximately one to two pieces of information in mind for a short time and use the knowledge to guide behavior, with adult support.",
+      later: "Hold approximately two to three pieces of information in mind and use that knowledge to guide behavior with less adult support." },
+    { id: "ATL 2.3 Managing Attention", label: "Managing Attention and Distractions", sub: "ATL Foundation 2.3",
+      early: "Demonstrate an emerging ability to ignore distractions during independent or group activities; often need adult support.",
+      later: "Demonstrate a more developed ability to manage attention and ignore distractions; need less adult support." },
+  ]},
+  { name: "Mathematics", tag: "Math 1.0\u20134.0", color: "#0F766E", foundations: [
+    { id: "Math 1.3 Cardinality", label: "Cardinality", sub: "Math Foundation 1.3",
+      early: "Answer \u201CHow many?\u201D by counting. May repeat the last number word after counting but is still developing understanding that it represents the total.",
+      later: "Consistently demonstrate understanding when counting that the last number name represents the total number of objects in the group." },
+    { id: "Math 2.5 Sorting & Classifying", label: "Sorting and Classifying", sub: "Math Foundation 2.5",
+      early: "Notice similarities and differences in the attributes of objects. Sort and classify objects by one attribute into two or more groups.",
+      later: "Sort and classify objects by one or more attributes into two or more groups with accuracy and flexibility." },
+    { id: "Math 3.2 Ordering Objects", label: "Ordering Objects", sub: "Math Foundation 3.2",
+      early: "Order a few objects (for example, three) by length or other attributes (for example, height, capacity).",
+      later: "Order a slightly larger number of objects (for example, four or five) by length or other attributes (for example, height, capacity)." },
+    { id: "Math 4.5 Positions & Directions", label: "Positions and Directions in Space", sub: "Math Foundation 4.5",
+      early: "Identify some positions of objects and people in space such as in/on, under/over, up/down, and inside/outside.",
+      later: "Identify positions of objects and people in space including in/on, under/over, up/down, inside/outside, near/far, next to, beside/between, and in front of/behind." },
+  ]},
+  { name: "Other Cross-Domain", tag: "Health / No Match", color: "#64748B", foundations: [
+    { id: "Health 1.1 Body Parts", label: "Identifying and Naming Body Parts", sub: "Health Foundation 1.1",
+      early: "Identify and correctly name a few external body parts and a few internal body parts and demonstrate limited knowledge of their functions.",
+      later: "Identify and correctly name several external body parts and internal body parts and demonstrate more detailed knowledge of their functions." },
+    { id: "No PTKLF Match", label: "No PTKLF Match", sub: "No foundation alignment",
+      early: "No corresponding PTKLF foundation.",
+      later: "" },
+  ]},
+];
+
+const bandMeta = {
+  most: { label: "Most children can do", color: "#059669" },
+  half: { label: "About half can do", color: "#D97706" },
+  few:  { label: "Few children can do yet", color: "#DC2626" },
+};
+const bandKeys = ["most", "half", "few"];
+
+function getBand(diff) {
+  if (diff < -0.5) return "most";
+  if (diff <= 1.0) return "half";
+  return "few";
+}
+
+function getItemsForFoundation(items, fId) {
+  return items.filter(it => it.foundations && it.foundations.includes(fId)).sort((a, b) => a.diff - b.diff);
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function dotHTML(it) {
+  const band = getBand(it.diff);
+  const bg = bandMeta[band].color;
+  const tipContent = `<strong>Item ${it.item}</strong> (\u03B4 = ${it.diff.toFixed(2)})<br>${esc(it.text)}`;
+  return `<span class="item-dot" style="background:${bg}">${it.item}<span class="item-tip">${tipContent}</span></span>`;
+}
+
+function cellHTML(items) {
+  if (items.length === 0) return `<div class="foundation-cell"><span class="no-coverage">No coverage</span></div>`;
+  return `<div class="foundation-cell"><div class="dots">${items.map(dotHTML).join('')}</div></div>`;
+}
+
+function summaryHTML(label, sub, items, color) {
+  const counts = {};
+  bandKeys.forEach(b => { counts[b] = items.filter(it => getBand(it.diff) === b).length; });
+  let html = `<div class="summary-box" style="border-left:4px solid ${color}">
+    <div class="summary-header">
+      <div><div class="summary-label" style="color:${color}">${label}</div><div class="summary-sub">${sub}</div></div>
+    </div>
+    <div class="summary-stats">
+      <div><span class="summary-total" style="color:${color}">${items.length}</span><span class="summary-total-label">items</span></div>`;
+  bandKeys.forEach(b => {
+    const lbl = b === "most" ? "Most can do" : b === "half" ? "About half" : "Few can do";
+    html += `<div class="stat-block"><div class="stat-num" style="color:${bandMeta[b].color}">${counts[b]}</div><div class="stat-label">${lbl}</div></div>`;
+  });
+  html += `</div></div>`;
+  return html;
+}
+
+// ── RENDER ──
+let out = '';
+out += `<h1>PTKLF Foundation Coverage by LMA Form</h1>`;
+out += `<p class="subtitle">Preschool/Transitional Kindergarten Learning Foundations aligned to LMA Forms 3XX (3\u20134 yr) and 4XX (4\u20135 yr)</p>`;
+out += `<p class="note">Note: Forms 0XX, 1XX, and 2XX (birth\u201336 months) align to the California Infant/Toddler Learning & Development Foundations, not shown here.</p>`;
+
+// Legend
+out += `<div class="legend">`;
+out += `<span class="legend-label">Item difficulty:</span>`;
+bandKeys.forEach(b => {
+  out += `<span class="legend-item"><span class="legend-swatch" style="background:${bandMeta[b].color}"></span><span class="legend-text" style="color:${bandMeta[b].color};border-bottom:2px solid ${bandMeta[b].color}">${bandMeta[b].label}</span></span>`;
+});
+out += `<span class="legend-divider">`;
+out += `<span class="legend-dot" style="background:#059669">5</span> Item #`;
+out += `</span>`;
+out += `<span class="legend-note">Items may appear in multiple foundations</span>`;
+out += `</div>`;
+
+// Summary boxes
+out += `<div class="summary-grid">`;
+out += summaryHTML("Form 3XX", "3\u20134 years (37\u201348 months) \u00B7 23 items", items3XX, "#0D7377");
+out += summaryHTML("Form 4XX", "4\u20135 years (48\u201360 months) \u00B7 42 items", items4XX, "#1B3A5C");
+out += `</div>`;
+
+// Foundation matrix
+strandDefs.forEach(strand => {
+  const active = strand.foundations.filter(f =>
+    getItemsForFoundation(items3XX, f.id).length > 0 || getItemsForFoundation(items4XX, f.id).length > 0
+  );
+  if (active.length === 0) return;
+
+  out += `<div class="strand">`;
+  out += `<div class="strand-header" style="background:${strand.color}">`;
+  out += `<span class="strand-name">${strand.name}</span>`;
+  out += `<div class="strand-forms">`;
+  out += `<span class="strand-form-label">Form 3XX (3\u20134 yr)</span>`;
+  out += `<span class="strand-form-label">Form 4XX (4\u20135 yr)</span>`;
+  out += `</div></div>`;
+  out += `<div class="strand-subheader" style="background:${strand.color}08">`;
+  out += `<span class="strand-subheader-label" style="color:${strand.color}">Foundation</span><span></span>`;
+  out += `<span class="strand-subheader-tag" style="color:${strand.color}">${strand.tag}</span>`;
+  out += `</div>`;
+
+  active.forEach(f => {
+    const i3 = getItemsForFoundation(items3XX, f.id);
+    const i4 = getItemsForFoundation(items4XX, f.id);
+    const tipText = f.early ? `<strong>Early (3\u20134\u00BD yr):</strong> ${esc(f.early)}${f.later ? '<br><br><strong>Later (4\u20135\u00BD yr):</strong> ' + esc(f.later) : ''}` : '';
+    out += `<div class="foundation-row">`;
+    out += `<div class="foundation-label"><div class="foundation-name">${esc(f.label)}${tipText ? '<div class="foundation-tip">' + tipText + '</div>' : ''}</div><div class="foundation-sub" style="color:${strand.color}">${esc(f.sub)}</div></div>`;
+    out += cellHTML(i3);
+    out += cellHTML(i4);
+    out += `</div>`;
+  });
+  out += `</div>`;
+});
+
+document.getElementById('app').innerHTML = out;
+</script>
+</body>
+</html>
