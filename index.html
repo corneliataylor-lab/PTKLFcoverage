@@ -37,9 +37,9 @@ h1 { font-size: 21px; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
 
 /* Strand sections */
 .strand { margin-bottom: 6px; }
-.strand-header { display: grid; grid-template-columns: 210px 1fr; padding: 8px 12px; border-radius: 6px 6px 0 0; align-items: center; }
-.strand-name { font-weight: 700; font-size: 14px; color: #fff; }
-.strand-forms { display: grid; grid-template-columns: 1fr 1fr; }
+.strand-header { display: grid; grid-template-columns: 1fr auto; padding: 8px 12px; border-radius: 6px 6px 0 0; align-items: center; gap: 12px; }
+.strand-name { font-weight: 700; font-size: 13px; color: #fff; }
+.strand-forms { display: grid; grid-template-columns: 1fr 1fr; min-width: 400px; }
 .strand-form-label { font-weight: 600; font-size: 11px; color: rgba(255,255,255,0.85); padding-left: 10px; }
 .strand-subheader { display: grid; grid-template-columns: 210px 1fr 1fr; padding: 3px 12px; border-bottom: 1px solid #E2E8F0; }
 .strand-subheader-label { font-size: 10px; font-weight: 600; }
@@ -100,7 +100,7 @@ const items4XX = [
   { item: 2, diff: -1.101, foundations: ["LL 1.2 Categories", "Health 1.1 Body Parts"], text: "Understands what we do with body parts, such as eyes, ears, mouth, when asked." },
   { item: 3, diff: -1.567, foundations: ["LL 1.2 Categories", "Math 2.5 Sorting & Classifying"], text: "Understands things that are similar (e.g., things that fly, things you eat, things you wear)." },
   { item: 4, diff: -2.040, foundations: ["Math 1.3 Cardinality"], text: "Knows how many are: one, two, three, four, five." },
-  { item: 5, diff: 1.681, foundations: ["LL 2.1 Phon. Awareness"], text: "Understands words and/or signs that rhyme." },
+  { item: 5, diff: 1.681, foundations: ["LL 2.3 Rhyming"], text: "Understands words and/or signs that rhyme." },
   { item: 6, diff: 0.050, foundations: ["LL 1.1 Vocabulary"], text: "Understands time concepts (e.g., day/night) and seasons of the year." },
   { item: 7, diff: 0.519, foundations: ["LL 1.3 Size & Location", "Math 4.5 Positions & Directions"], text: "Points to or places object before, after, above, below when asked." },
   { item: 8, diff: -2.587, foundations: ["LL 1.1 Vocabulary"], text: "Understands most of what is spoken and/or signed at home and in school." },
@@ -115,7 +115,7 @@ const items4XX = [
   { item: 17, diff: 0.078, foundations: ["LL 1.5 Questions"], text: "Asks \u201CWho\u201D questions." },
   { item: 18, diff: 0.444, foundations: ["LL 1.8 Conversations"], text: "Ends conversations appropriately." },
   { item: 19, diff: 1.857, foundations: ["LL 1.4 Grammar"], text: "Uses future tense." },
-  { item: 20, diff: 2.089, foundations: ["LL 2.1 Phon. Awareness"], text: "Uses rhyming with words and/or signs." },
+  { item: 20, diff: 2.089, foundations: ["LL 2.3 Rhyming"], text: "Uses rhyming with words and/or signs." },
   { item: 21, diff: 1.870, foundations: ["LL 1.4 Grammar"], text: "Uses \u201Cbecause\u2026,\u201D \u201Cwhen\u2026,\u201D \u201Cif\u2026,\u201D and \u201Cso\u2026,\u201D in clauses." },
   { item: 22, diff: 2.232, foundations: ["LL 1.3 Size & Location", "LL 1.4 Grammar"], text: "Uses \u201Cbefore\u201D and \u201Cafter.\u201D" },
   { item: 23, diff: 1.488, foundations: ["LL 1.4 Grammar"], text: "Uses \u201Cthese\u201D and \u201Cthose.\u201D" },
@@ -129,7 +129,7 @@ const items4XX = [
   { item: 31, diff: 0.115, foundations: ["No PTKLF Match"], text: "In ASL, uses body shift and eye-gaze. In spoken English, uses prosody, non-verbal cues, and facial expressions or gestures to convey meaning and indicate shifts in focus." },
   { item: 32, diff: 1.930, foundations: ["LL 1.4 Grammar"], text: "In ASL, uses number distribution, e.g., talking about leaves falling. In spoken English, uses singular nouns, plural nouns, quantifiers, and temporal/spatial distribution." },
   { item: 33, diff: -1.772, foundations: ["LL 3.1 Literacy Interest", "LL 3.2 Stories"], text: "Enjoys stories and can understand simple questions." },
-  { item: 34, diff: -2.308, foundations: ["LL 2.7 Letter/Word Knowledge"], text: "Identifies some written letters and numbers." },
+  { item: 34, diff: -2.308, foundations: ["LL 2.4 Letters"], text: "Identifies some written letters and numbers." },
   { item: 35, diff: 0.767, foundations: ["LL 1.6 Narratives"], text: "Can tell made-up stories that stay on topic. In ASL, the child can use space in storytelling." },
   { item: 36, diff: -2.856, foundations: ["LL 3.1 Literacy Interest"], text: "Pays attention to short stories." },
   { item: 37, diff: 1.536, foundations: ["LL 3.2 Stories"], text: "Names main idea after listening to a story." },
@@ -141,91 +141,95 @@ const items4XX = [
 ];
 
 const strandDefs = [
-  { name: "Listening & Speaking", tag: "Language & Literacy 1.0", color: "#0D7377", foundations: [
-    { id: "LL 1.1 Vocabulary", label: "Understanding & Using Vocabulary", sub: "LL Foundation 1.1",
-      early: "Understand and use accepted words for objects, actions, and attributes encountered frequently in both real and symbolic contexts.",
-      later: "Understand and use an increasing variety and specificity of accepted words for objects, actions, and attributes encountered in both real and symbolic contexts." },
-    { id: "LL 1.2 Categories", label: "Understanding & Using Words for Categories", sub: "LL Foundation 1.2",
-      early: "Understand and use words for some general categories and some specific items within a category.",
-      later: "Understand and use words for more general categories, more specific items within a category, and words that describe the relationship between categories." },
-    { id: "LL 1.3 Size & Location", label: "Understanding & Using Size & Location Words", sub: "LL Foundation 1.3",
-      early: "Understand and use a small number of words related to size and location of objects.",
-      later: "Understand and use a greater number of words for size and location of objects and begin to use words for the temporal position of events." },
-    { id: "LL 1.4 Grammar", label: "Using Grammar & Sentence Structure", sub: "LL Foundation 1.4",
-      early: "Use two- and three-word sentences with emerging control of accepted grammar.",
-      later: "Use sentences of increasing length, with increasing control of accepted grammar." },
-    { id: "LL 1.5 Questions", label: "Asking Questions", sub: "LL Foundation 1.5",
-      early: "Ask simple questions.",
-      later: "Ask increasingly complex questions." },
-    { id: "LL 1.6 Narratives", label: "Constructing Narratives", sub: "LL Foundation 1.6",
-      early: "Create simple narratives, such as sharing a personal experience or retelling a short sequence of events.",
-      later: "Create more extended narratives, including personal narratives, fictional stories, and narratives about informational topics." },
-    { id: "LL 1.7 Explanations", label: "Sharing Explanations & Opinions", sub: "LL Foundation 1.7",
-      early: "Offer simple explanations, opinions, or reasons in their conversations.",
-      later: "Offer more detailed and extended explanations, opinions, or reasons in their conversations." },
-    { id: "LL 1.8 Conversations", label: "Participating in Conversations", sub: "LL Foundation 1.8",
-      early: "Participate in brief, simple conversations that are connected to a shared activity.",
-      later: "Participate in longer and more complex conversations, including conversations on topics that are not immediately present." },
+  { name: "Foundational Language Development: Strand 1.0 \u2014 Listening and Speaking", tag: "", color: "#0D7377", foundations: [
+    { id: "LL 1.1 Vocabulary", label: "Understanding and Using Vocabulary", sub: "Foundation 1.1 \u00B7 Sub-Strand: Vocabulary",
+      early: "Understand and use words for objects, actions, and attributes frequently experienced in everyday life, such as through play, conversations, or stories.",
+      later: "Understand and use an increasing variety of words for objects, actions, and attributes experienced in everyday life, such as through play, conversations, or stories." },
+    { id: "LL 1.2 Categories", label: "Understanding and Using Words for Categories", sub: "Foundation 1.2 \u00B7 Sub-Strand: Vocabulary",
+      early: "Understand and use commonly experienced vocabulary to describe categories and the relationships within them.",
+      later: "Understand and use increasingly specific vocabulary to describe categories and the relationships within them." },
+    { id: "LL 1.3 Size & Location", label: "Understanding and Using Size and Location Words", sub: "Foundation 1.3 \u00B7 Sub-Strand: Vocabulary",
+      early: "Understand and use words to describe the size and location of objects (such as \u201Ctiny\u201D and \u201Con\u201D), including simple comparisons (such as \u201Cbigger\u201D).",
+      later: "Understand and use increasingly specific words to describe and compare the size and location of objects (such as \u201Clonger\u201D and \u201Cbetween\u201D)." },
+    { id: "LL 1.4 Grammar", label: "Using Grammatical Features and Sentence Structure", sub: "Foundation 1.4 \u00B7 Sub-Strand: Grammar",
+      early: "Use common word forms and sentence forms to express thoughts and ideas.",
+      later: "Use both common and less common word forms and sentence forms to express complex thoughts and ideas." },
+    { id: "LL 1.5 Questions", label: "Asking Questions", sub: "Foundation 1.5 \u00B7 Sub-Strand: Language Use",
+      early: "Use questions to seek information and to clarify and confirm understanding.",
+      later: "Use questions and follow-up questions to seek information and to clarify and confirm understanding." },
+    { id: "LL 1.6 Narratives", label: "Constructing Narratives", sub: "Foundation 1.6 \u00B7 Sub-Strand: Language Use",
+      early: "Use language to construct real or fictional short narratives.",
+      later: "Use language to construct real or fictional extended narratives that have several details or a plotline." },
+    { id: "LL 1.7 Explanations", label: "Sharing Explanations and Opinions", sub: "Foundation 1.7 \u00B7 Sub-Strand: Language Use",
+      early: "Share descriptions, opinions, and explanations.",
+      later: "Share detailed descriptions, opinions, and explanations." },
+    { id: "LL 1.8 Conversations", label: "Participating in Conversations", sub: "Foundation 1.8 \u00B7 Sub-Strand: Language Use",
+      early: "Participate in back-and-forth conversations with adults and peers. Respond on topic for at least one turn in a conversation.",
+      later: "Participate in increasingly long and complex back-and-forth conversations with adults and peers. Respond on topic across several turns in the conversation." },
   ]},
-  { name: "Foundational Literacy Skills", tag: "Language & Literacy 2.0\u20133.0", color: "#7C3AED", foundations: [
-    { id: "LL 2.1 Phon. Awareness", label: "Participating in Rhyming and Wordplay", sub: "LL Foundation 2.3\u20132.2",
-      early: "Recognize and produce rhymes in stories, songs, games, or play; orally blend and delete words and syllables without the support of pictures or objects.",
-      later: "Recognize, produce, and manipulate sounds (rhymes, syllables, onsets/rimes, phonemes) with increasing independence." },
-    { id: "LL 2.6 Concepts of Print", label: "Concepts of Print", sub: "LL Foundation 2.6",
-      early: "Demonstrate emerging understanding that print carries meaning and begin to recognize how print is organized.",
-      later: "Demonstrate a more developed understanding that print carries meaning and know that print is organized in a specific way." },
-    { id: "LL 2.7 Letter/Word Knowledge", label: "Letter & Word Knowledge", sub: "LL Foundation 2.7",
-      early: "Demonstrate emerging letter and word knowledge.",
-      later: "Demonstrate a more developed knowledge of letters and words." },
-    { id: "LL 3.1 Literacy Interest", label: "Interest in Literacy Activities", sub: "LL Foundation 3.1",
-      early: "Demonstrate an interest in books, songs, rhymes, and other literacy activities.",
-      later: "Demonstrate a growing interest and involvement in books, songs, rhymes, and other literacy activities." },
-    { id: "LL 3.2 Stories", label: "Understanding Stories", sub: "LL Foundation 3.2",
-      early: "Demonstrate understanding of main events or ideas in familiar stories or informational texts with adult support.",
-      later: "Demonstrate understanding of main events or ideas in stories and informational texts with less adult support; retell familiar stories with increasing detail." },
+  { name: "Foundational Language Development: Strand 2.0 \u2014 Foundational Literacy Skills", tag: "", color: "#7C3AED", foundations: [
+    { id: "LL 2.3 Rhyming", label: "Participating in Rhyming and Wordplay", sub: "Foundation 2.3 \u00B7 Sub-Strand: Phonological Awareness",
+      early: "Recognize or participate in familiar rhymes or songs.",
+      later: "Produce rhyming sounds or words. Rhymes may be imperfect and can be real or nonsense words." },
+    { id: "LL 2.6 Concepts of Print", label: "Understanding the Concept of Print", sub: "Foundation 2.6 \u00B7 Sub-Strand: Concepts About Print",
+      early: "Recognize print as something that can be read and has meaning.",
+      later: "Identify the meaning of a few instances of familiar print in the environment." },
+    { id: "LL 2.4 Letters", label: "Identifying Letters", sub: "Foundation 2.4 \u00B7 Sub-Strand: Alphabetics and Print",
+      early: "Match some letter names to their printed form. These will commonly be letters in the child\u2019s first name.",
+      later: "Match many letter names to their printed form." },
   ]},
-  { name: "Self (SED)", tag: "Social & Emotional Dev. 1.0", color: "#BE185D", foundations: [
-    { id: "SED 1.3 Understanding Emotions", label: "Understanding Emotions in Self and Others", sub: "SED Foundation 1.3",
-      early: "Identify basic emotions (e.g., happy, sad, surprised) and recognize emotional expressions in self and others.",
-      later: "Identify basic and complex emotions (e.g., embarrassment, pride) and recognize emotional expressions in self and others. Demonstrate increasing understanding of different ways of expressing emotions." },
-    { id: "SED 1.7 Understanding Others", label: "Understanding Other People\u2019s Thoughts & Experiences", sub: "SED Foundation 1.7",
+  { name: "Foundational Language Development: Strand 3.0 \u2014 Reading", tag: "", color: "#6D28D9", foundations: [
+    { id: "LL 3.1 Literacy Interest", label: "Demonstrating Interest in Literacy Activities", sub: "Foundation 3.1 \u00B7 Sub-Strand: Literacy Interest and Response",
+      early: "Demonstrate interest in and engagement with literacy and literacy-related activities.",
+      later: "Demonstrate interest in and engagement with literacy and literacy-related activities for progressively extended periods of time and with increasing independence." },
+    { id: "LL 3.2 Stories", label: "Understanding Stories", sub: "Foundation 3.2 \u00B7 Sub-Strand: Comprehension and Analysis of Age-Appropriate Text",
+      early: "Demonstrate basic understanding of main characters or events in a story after the child has experienced the story a few times.",
+      later: "Demonstrate understanding of details in a story, including knowledge of characters, events, and ordering of events, and use their increased understanding of story structure to predict what might come next when asked." },
+  ]},
+  { name: "Social & Emotional Development: Strand 1.0 \u2014 Self", tag: "", color: "#BE185D", foundations: [
+    { id: "SED 1.3 Understanding Emotions", label: "Understanding Emotions in Self and Others", sub: "Foundation 1.3 \u00B7 Sub-Strand: Emotional Knowledge",
+      early: "Identify basic emotions (for example, happy, sad, surprised) and recognize emotional expressions in self and others.",
+      later: "Identify basic and complex emotions (for example, embarrassment, prideful) and recognize emotional expressions in self and others. Demonstrate increasing understanding of different ways of expressing emotions and related behaviors for themselves and others." },
+    { id: "SED 1.7 Understanding Others", label: "Understanding Other People\u2019s Thoughts, Behaviors, and Experiences", sub: "Foundation 1.7 \u00B7 Sub-Strand: Social Awareness",
       early: "Develop understanding that others have unique thoughts, behaviors, and experiences.",
-      later: "Demonstrate emerging understanding of the mental and psychological reasons people act as they do and how these contribute to differences in behavior." },
+      later: "Demonstrate emerging understanding of the mental and psychological reasons people act as they do and how these reasons contribute to differences in how people act or behave." },
   ]},
-  { name: "Interactions & Relationships (SED)", tag: "Social & Emotional Dev. 2.0", color: "#9333EA", foundations: [
-    { id: "SED 2.1 Reciprocal Interactions", label: "Reciprocal Interactions with Adults", sub: "SED Foundation 2.1",
+  { name: "Social & Emotional Development: Strand 2.0 \u2014 Interactions and Relationships with Adults", tag: "", color: "#9333EA", foundations: [
+    { id: "SED 2.1 Reciprocal Interactions", label: "Reciprocal Interactions with Adults", sub: "Foundation 2.1 \u00B7 Sub-Strand: Interactions with Adults",
       early: "Engage in positive interactions with familiar adults, especially in familiar settings. Demonstrate an emerging ability to initiate social interaction with familiar adults.",
-      later: "Take greater initiative and participate in more reciprocal interactions with familiar adults (e.g., initiate a conversation, suggest a shared activity, or ask for assistance)." },
-    { id: "SED 2.2 Seeking Security", label: "Seeking Security and Support", sub: "SED Foundation 2.2",
-      early: "Seek security and support (e.g., help or comfort) from attachment figures to address their needs, especially in difficult situations.",
-      later: "Anticipate when they need support and take greater initiative in seeking support from attachment figures to address their needs." },
+      later: "Take greater initiative and participate in more reciprocal interactions with familiar adults (for example, initiate a conversation, suggest a shared activity, or ask for assistance)." },
+    { id: "SED 2.2 Seeking Security", label: "Seeking Security and Support", sub: "Foundation 2.2 \u00B7 Sub-Strand: Attachment",
+      early: "Seek security and support (for example, help or comfort) from their attachment figures (adults in children\u2019s lives who are caregivers, which may include teachers) to address their needs, especially in difficult situations.",
+      later: "Anticipate when they need support and take greater initiative in seeking support (for example, help or comfort) from their attachment figures (adults in children\u2019s lives who are caregivers, which may include teachers) to address their needs, especially in difficult situations." },
   ]},
-  { name: "Executive Functioning (ATL)", tag: "Approaches to Learning 2.0", color: "#0369A1", foundations: [
-    { id: "ATL 2.1 Working Memory", label: "Working Memory", sub: "ATL Foundation 2.1",
-      early: "Hold approximately one to two pieces of information in mind for a short time and use the knowledge to guide behavior, with adult support.",
-      later: "Hold approximately two to three pieces of information in mind and use that knowledge to guide behavior with less adult support." },
-    { id: "ATL 2.3 Managing Attention", label: "Managing Attention and Distractions", sub: "ATL Foundation 2.3",
-      early: "Demonstrate an emerging ability to ignore distractions during independent or group activities; often need adult support.",
-      later: "Demonstrate a more developed ability to manage attention and ignore distractions; need less adult support." },
+  { name: "Approaches to Learning: Strand 2.0 \u2014 Executive Functioning", tag: "", color: "#0369A1", foundations: [
+    { id: "ATL 2.1 Working Memory", label: "Working Memory", sub: "Foundation 2.1 \u00B7 Sub-Strand: Working Memory",
+      early: "Hold approximately one to two pieces of information in their mind for a short time and use the knowledge to guide behavior when performing tasks and engaging in play, with adult support.",
+      later: "Hold approximately two to three pieces of information in their mind for longer periods of time and use the knowledge to guide behavior when engaging in multistep tasks and more complex play, with less adult support." },
+    { id: "ATL 2.3 Managing Attention", label: "Managing Attention and Distractions", sub: "Foundation 2.3 \u00B7 Sub-Strand: Managing Attention",
+      early: "Demonstrate an emerging ability to ignore distractions and interruptions during independent or group activities; however, often need adult support to manage attention when distracted or interrupted.",
+      later: "Demonstrate an emerging ability to ignore distractions and interruptions during independent or group activities with less adult support." },
   ]},
-  { name: "Mathematics", tag: "Math 1.0\u20134.0", color: "#0F766E", foundations: [
-    { id: "Math 1.3 Cardinality", label: "Cardinality", sub: "Math Foundation 1.3",
-      early: "Answer \u201CHow many?\u201D by counting. May repeat the last number word after counting but is still developing understanding that it represents the total.",
-      later: "Consistently demonstrate understanding when counting that the last number name represents the total number of objects in the group." },
-    { id: "Math 2.5 Sorting & Classifying", label: "Sorting and Classifying", sub: "Math Foundation 2.5",
+  { name: "Mathematics: Strands 1.0\u20134.0", tag: "", color: "#0F766E", foundations: [
+    { id: "Math 1.3 Cardinality", label: "Cardinality", sub: "Foundation 1.3 \u00B7 Strand 1.0 Counting and Cardinality",
+      early: "Answer the question \u201CHow many?\u201D by counting. May repeat the last number word in the number list after counting but is still developing an understanding that the number name of the last object counted represents the total number of objects in the group.",
+      later: "Consistently demonstrate understanding when counting that the number name of the last object counted represents the total number of objects in the group." },
+    { id: "Math 2.5 Sorting & Classifying", label: "Sorting and Classifying", sub: "Foundation 2.5 \u00B7 Strand 2.0 Operations and Algebraic Thinking",
       early: "Notice similarities and differences in the attributes of objects. Sort and classify objects by one attribute into two or more groups.",
-      later: "Sort and classify objects by one or more attributes into two or more groups with accuracy and flexibility." },
-    { id: "Math 3.2 Ordering Objects", label: "Ordering Objects", sub: "Math Foundation 3.2",
+      later: "Sort and classify objects by one or more attributes into two or more groups with accuracy and flexibility. When sorting by two attributes, a child may first sort by one attribute and then by the second attribute." },
+    { id: "Math 3.2 Ordering Objects", label: "Ordering Objects", sub: "Foundation 3.2 \u00B7 Strand 3.0 Measurement and Data",
       early: "Order a few objects (for example, three) by length or other attributes (for example, height, capacity).",
       later: "Order a slightly larger number of objects (for example, four or five) by length or other attributes (for example, height, capacity)." },
-    { id: "Math 4.5 Positions & Directions", label: "Positions and Directions in Space", sub: "Math Foundation 4.5",
+    { id: "Math 4.5 Positions & Directions", label: "Positions and Directions in Space", sub: "Foundation 4.5 \u00B7 Strand 4.0 Geometry and Spatial Thinking",
       early: "Identify some positions of objects and people in space such as in/on, under/over, up/down, and inside/outside.",
       later: "Identify positions of objects and people in space including in/on, under/over, up/down, inside/outside, near/far, next to, beside/between, and in front of/behind." },
   ]},
-  { name: "Other Cross-Domain", tag: "Health / No Match", color: "#64748B", foundations: [
-    { id: "Health 1.1 Body Parts", label: "Identifying and Naming Body Parts", sub: "Health Foundation 1.1",
-      early: "Identify and correctly name a few external body parts and a few internal body parts and demonstrate limited knowledge of their functions.",
-      later: "Identify and correctly name several external body parts and internal body parts and demonstrate more detailed knowledge of their functions." },
+  { name: "Health: Strand 1.0 \u2014 Understanding Health and Wellness", tag: "", color: "#64748B", foundations: [
+    { id: "Health 1.1 Body Parts", label: "Identifying and Naming Body Parts", sub: "Health Foundation 1.1 \u00B7 Sub-Strand: Body Awareness and Identification",
+      early: "Identify and correctly name a few external body parts (for example, elbow, head, private body parts) and a few internal body parts (for example, bones, brain, heart) and demonstrate limited knowledge of their functions.",
+      later: "Identify and correctly name several external body parts (for example, elbow, head, private body parts) and internal body parts (for example, bones, brain, heart) and demonstrate more detailed knowledge of their functions." },
+  ]},
+  { name: "No PTKLF Match", tag: "", color: "#94A3B8", foundations: [
     { id: "No PTKLF Match", label: "No PTKLF Match", sub: "No foundation alignment",
       early: "No corresponding PTKLF foundation.",
       later: "" },
@@ -319,14 +323,13 @@ strandDefs.forEach(strand => {
   out += `<span class="strand-form-label">Form 4XX (4\u20135 yr)</span>`;
   out += `</div></div>`;
   out += `<div class="strand-subheader" style="background:${strand.color}08">`;
-  out += `<span class="strand-subheader-label" style="color:${strand.color}">Foundation</span><span></span>`;
-  out += `<span class="strand-subheader-tag" style="color:${strand.color}">${strand.tag}</span>`;
+  out += `<span class="strand-subheader-label" style="color:${strand.color}">Foundation</span><span></span><span></span>`;
   out += `</div>`;
 
   active.forEach(f => {
     const i3 = getItemsForFoundation(items3XX, f.id);
     const i4 = getItemsForFoundation(items4XX, f.id);
-    const tipText = f.early ? `<strong>Early (3\u20134\u00BD yr):</strong> ${esc(f.early)}${f.later ? '<br><br><strong>Later (4\u20135\u00BD yr):</strong> ' + esc(f.later) : ''}` : '';
+    const tipText = f.early ? `<strong>Early (3 to 4\u00BD yr):</strong> ${esc(f.early)}${f.later ? '<br><br><strong>Later (4 to 5\u00BD yr):</strong> ' + esc(f.later) : ''}` : '';
     out += `<div class="foundation-row">`;
     out += `<div class="foundation-label"><div class="foundation-name">${esc(f.label)}${tipText ? '<div class="foundation-tip">' + tipText + '</div>' : ''}</div><div class="foundation-sub" style="color:${strand.color}">${esc(f.sub)}</div></div>`;
     out += cellHTML(i3);
